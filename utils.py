@@ -11,6 +11,9 @@ CROPPED_GRADIENTS_DIR = 'videos/gradients/cropped/'
 
 # FRAMES_CUT = 30
 
+def frames_to_seconds(frames, rate=25.0):
+    return np.array(frames / rate)
+
 
 def visualize_plot(arr):
     import matplotlib.pyplot as plt
