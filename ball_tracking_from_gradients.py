@@ -50,8 +50,8 @@ def analyze_video():
     results = []
 
     frame_iterator = FrameIterator(CROPPED_GRADIENTS_DIR)
-    for i, frame in enumerate(frame_iterator.read_frames()):
-
+    for i, (frame, name) in enumerate(frame_iterator.read_frames()):
+        # print(name)
         mask = cv2.inRange(frame, white_lower, white_upper)
         mask = cv2.erode(mask, None, iterations=2)
         mask = cv2.dilate(mask, None, iterations=2)
@@ -125,7 +125,6 @@ def start():
     frames_seconds = frames_to_seconds(np.array([c[1] for c in a]))
     print(frames_seconds)
     print(np.diff(frames_seconds))
-    # NOT CORRECT NOW. HAVE TO SHIFT.
 
 
 if __name__ == '__main__':

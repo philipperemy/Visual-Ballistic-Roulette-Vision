@@ -59,11 +59,14 @@ class FrameIterator(object):
 
     def list_frames(self):
         # return sorted([self.dir + x for x in os.listdir(self.dir) if x.startswith('output_')])[:FRAMES_CUT]
-        return sorted([self.dir + x for x in os.listdir(self.dir) if x.startswith('output_')])
+        from natural_sort import natural_keys
+        l = [self.dir + x for x in os.listdir(self.dir) if x.startswith('output_')]
+        l.sort(key=natural_keys)
+        return l
 
     def read_frames(self):
         for frame in self.list_frames():
-            yield imread(frame)
+            yield (imread(frame), frame)
 
 
 def main():

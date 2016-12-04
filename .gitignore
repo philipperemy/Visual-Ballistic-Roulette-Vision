@@ -3,3 +3,4 @@ videos/frames/
 videos/gradients/
 .idea/
 __pycache__/
+*.pkl
