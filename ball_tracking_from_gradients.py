@@ -104,8 +104,8 @@ def analyze_video():
     return results
 
 
-def start():
-    ball_track_file = 'res.pkl'
+def start_ball_analysis():
+    ball_track_file = 'b_res.pkl'
     if os.path.isfile(ball_track_file):
         r = dill.load(open(ball_track_file, 'rb'))
     else:
@@ -127,4 +127,4 @@ def start():
 
 
 if __name__ == '__main__':
-    start()
+    start_ball_analysis()

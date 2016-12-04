@@ -10,7 +10,7 @@ import numpy as np
 from utils import FRAMES_DIR, FrameIterator, frames_to_seconds
 
 
-def points_analysis(results):
+def extract_lap_frames(results):
     x_range = np.array([r[0][0] for r in results])
     indicators = np.array(x_range > np.percentile(x_range, 95), dtype=int)
     buffer = []
@@ -103,17 +103,18 @@ def analyze_video():
     return results
 
 
-def start():
+def start_wheel_analysis():
     wheel_tracking_file = 'w_res.pkl'
     if os.path.isfile(wheel_tracking_file):
         r = dill.load(open(wheel_tracking_file, 'rb'))
     else:
         r = analyze_video()
         dill.dump(r, open(wheel_tracking_file, 'wb'))
-    a = points_analysis(r)
+    a = extract_lap_frames(r)
     frames_seconds = frames_to_seconds(np.array([c[1] for c in a]))
     print(frames_seconds)
+    return frames_seconds
 
 
 if __name__ == '__main__':
-    start()
+    start_wheel_analysis()
