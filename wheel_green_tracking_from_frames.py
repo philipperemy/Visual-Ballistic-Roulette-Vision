@@ -25,7 +25,7 @@ def extract_lap_frames(results):
         elif indicator == 1:
             buffer.append(frame_id)
     frames_ids_of_interest = np.array(
-        [x for x in np.array(np.array([0] + list(np.diff(frame_ids))) > 20, dtype=bool) * frame_ids if x > 0])
+        [x for x in np.array(np.array([21] + list(np.diff(frame_ids))) > 20, dtype=bool) * frame_ids if x > 0])
     return [r for r in results if r[1] in frames_ids_of_interest]
 
 
