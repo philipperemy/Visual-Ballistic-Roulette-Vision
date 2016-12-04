@@ -4,3 +4,4 @@ videos/gradients/
 .idea/
 __pycache__/
 *.pkl
+*.pyc
