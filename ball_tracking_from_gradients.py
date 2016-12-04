@@ -35,6 +35,7 @@ def bucket_frames(results):
                 valid_frames.append(bucket.copy())  # push the bucket.
             bucket = []  # reset the bucket.
         last_known_result = result
+    valid_frames = [f for f in valid_frames if f[0][0] is not None]
     return valid_frames
 
 
