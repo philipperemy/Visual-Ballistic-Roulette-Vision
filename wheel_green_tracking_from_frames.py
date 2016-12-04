@@ -7,12 +7,26 @@ import dill
 import imutils
 import numpy as np
 
-from utils import FRAMES_DIR, FrameIterator
+from utils import FRAMES_DIR, FrameIterator, frames_to_seconds
 
 
 def points_analysis(results):
     x_range = np.array([r[0][0] for r in results])
-    np.array(x_range < np.percentile(x_range, 95), dtype=int)
+    indicators = np.array(x_range > np.percentile(x_range, 95), dtype=int)
+    buffer = []
+    frame_ids = []
+    for i, res in enumerate(results):
+        frame_id = res[1]
+        indicator = indicators[i]
+        if indicator == 0:
+            if len(buffer) != 0:
+                frame_ids.append(int(np.median(buffer)))
+            buffer = []  # clear buffer.
+        elif indicator == 1:
+            buffer.append(frame_id)
+    frames_ids_of_interest = np.array(
+        [x for x in np.array(np.array([0] + list(np.diff(frame_ids))) > 20, dtype=bool) * frame_ids if x > 0])
+    return [r for r in results if r[1] in frames_ids_of_interest]
 
 
 def analyze_video():
@@ -96,7 +110,9 @@ def start():
     else:
         r = analyze_video()
         dill.dump(r, open(wheel_tracking_file, 'wb'))
-    points_analysis(r)
+    a = points_analysis(r)
+    frames_seconds = frames_to_seconds(np.array([c[1] for c in a]))
+    print(frames_seconds)
 
 
 if __name__ == '__main__':
