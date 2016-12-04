@@ -11,7 +11,7 @@ from utils import FRAMES_DIR, FrameIterator
 
 
 def points_analysis(results):
-    x_range = np.array([r[0] for r in results])
+    x_range = np.array([r[0][0] for r in results])
     np.array(x_range < np.percentile(x_range, 95), dtype=int)
 
 
@@ -65,20 +65,17 @@ def analyze_video():
                 cv2.circle(frame, (int(x), int(y)), int(radius), (0, 255, 255), 2)
                 cv2.circle(frame, center, 5, (0, 0, 255), -1)
                 print(center, i)
-                results.append(center)
+                results.append((center, i))
         # update the points queue
         pts.appendleft(center)
         # loop over the set of tracked points
-        for i in range(1, len(pts)):
-            # if either of the tracked points are None, ignore
-            # them
-            if pts[i - 1] is None or pts[i] is None:
+        for j in range(1, len(pts)):
+            # if either of the tracked points are None, ignore them
+            if pts[j - 1] is None or pts[j] is None:
                 continue
-
-            # otherwise, compute the thickness of the line and
-            # draw the connecting lines
-            thickness = int(np.sqrt(64 / float(i + 1)) * 2.5)
-            cv2.line(frame, pts[i - 1], pts[i], (0, 0, 255), thickness)
+            # otherwise, compute the thickness of the line and draw the connecting lines
+            thickness = int(np.sqrt(64 / float(j + 1)) * 2.5)
+            cv2.line(frame, pts[j - 1], pts[j], (0, 0, 255), thickness)
 
         # show the frame to our screen
         cv2.imshow("Frame", frame)
@@ -93,12 +90,12 @@ def analyze_video():
 
 
 def start():
-    wheel_file = 'w_res.pkl'
-    if os.path.isfile(wheel_file):
-        r = dill.load(open(wheel_file, 'rb'))
+    wheel_tracking_file = 'w_res.pkl'
+    if os.path.isfile(wheel_tracking_file):
+        r = dill.load(open(wheel_tracking_file, 'rb'))
     else:
         r = analyze_video()
-        dill.dump(r, open(wheel_file, 'wb'))
+        dill.dump(r, open(wheel_tracking_file, 'wb'))
     points_analysis(r)
 
 

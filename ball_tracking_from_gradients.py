@@ -84,15 +84,13 @@ def analyze_video():
         # update the points queue
         pts.appendleft(center)
         # loop over the set of tracked points
-        for i in range(1, len(pts)):
-            # if either of the tracked points are None, ignore
-            # them
-            if pts[i - 1] is None or pts[i] is None:
+        for j in range(1, len(pts)):
+            # if either of the tracked points are None, ignore them
+            if pts[j - 1] is None or pts[j] is None:
                 continue
-
             # otherwise, compute the thickness of the line and draw the connecting lines
-            thickness = int(np.sqrt(64 / float(i + 1)) * 2.5)
-            cv2.line(frame, pts[i - 1], pts[i], (0, 0, 255), thickness)
+            thickness = int(np.sqrt(64 / float(j + 1)) * 2.5)
+            cv2.line(frame, pts[j - 1], pts[j], (0, 0, 255), thickness)
 
         # show the frame to our screen
         cv2.imshow("Frame", frame)
@@ -107,11 +105,12 @@ def analyze_video():
 
 
 def start():
-    if os.path.isfile('res.pkl'):
-        r = dill.load(open('res.pkl', 'rb'))
+    ball_track_file = 'res.pkl'
+    if os.path.isfile(ball_track_file):
+        r = dill.load(open(ball_track_file, 'rb'))
     else:
         r = analyze_video()
-        dill.dump(r, open('res.pkl', 'wb'))
+        dill.dump(r, open(ball_track_file, 'wb'))
 
     from pprint import pprint
 
