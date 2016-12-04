@@ -5,7 +5,7 @@ import cv2
 import dill
 import numpy as np
 
-from utils import FrameIterator, CROPPED_GRADIENTS_DIR, frames_to_seconds
+from utils import FrameIterator, CROPPED_GRADIENTS_DIR, frames_to_seconds, crop_gradients
 
 
 def bucket_analysis(buckets):
@@ -109,6 +109,7 @@ def start_ball_analysis():
     if os.path.isfile(ball_track_file):
         r = dill.load(open(ball_track_file, 'rb'))
     else:
+        crop_gradients()
         r = analyze_video()
         dill.dump(r, open(ball_track_file, 'wb'))
 
@@ -124,7 +125,7 @@ def start_ball_analysis():
     frames_seconds = frames_to_seconds(np.array([c[1] for c in a]))
     print(frames_seconds)
     print(np.diff(frames_seconds))
-
+    return frames_seconds
 
 if __name__ == '__main__':
     start_ball_analysis()

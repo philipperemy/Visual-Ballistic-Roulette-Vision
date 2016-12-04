@@ -69,18 +69,17 @@ class FrameIterator(object):
             yield (imread(frame), frame)
 
 
-def main():
+def crop_gradients():
     if not os.path.exists(CROPPED_GRADIENTS_DIR):
         os.makedirs(CROPPED_GRADIENTS_DIR)
     frame_iterator = FrameIterator(GRADIENTS_DIR)
-    frames = np.array([frame for frame in FrameIterator.read_frames(frame_iterator)])
+    frames = np.array([frame[0] for frame in FrameIterator.read_frames(frame_iterator)])
     mean_pixels = mean_pixels_horizontal(frames)
     pxl_start_wheel, pxl_end_wheel = threshold(mean_pixels, 0.25)
     print(pxl_start_wheel, pxl_end_wheel)
-    # visualize_plot(mean_pixels)
     cropped_frames = crop_horizontal(frames, pxl_end_wheel)
     write(cropped_frames)
 
 
 if __name__ == '__main__':
-    main()
+    crop_gradients()
