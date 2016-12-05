@@ -34,7 +34,7 @@ def analyze_video():
     # define the lower and upper boundaries of the "green"
     # ball in the HSV color space, then initialize the
     # list of tracked points
-    green_lower = (29, 86, 6)
+    green_lower = (29, 86, 60)
     green_upper = (64, 255, 255)
     pts = deque(maxlen=64)
 
@@ -54,7 +54,7 @@ def analyze_video():
         mask = cv2.erode(mask, None, iterations=2)
         mask = cv2.dilate(mask, None, iterations=2)
 
-        # cv2.imshow("Mask", mask)
+        cv2.imshow("Mask", mask)
 
         # find contours in the mask and initialize the current
         # (x, y) center of the ball

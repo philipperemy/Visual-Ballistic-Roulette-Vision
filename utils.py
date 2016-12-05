@@ -75,9 +75,9 @@ def crop_gradients():
     frame_iterator = FrameIterator(GRADIENTS_DIR)
     frames = np.array([frame[0] for frame in FrameIterator.read_frames(frame_iterator)])
     mean_pixels = mean_pixels_horizontal(frames)
-    pxl_start_wheel, pxl_end_wheel = threshold(mean_pixels, 0.25)
+    pxl_start_wheel, pxl_end_wheel = threshold(mean_pixels, np.mean(mean_pixels))
     print(pxl_start_wheel, pxl_end_wheel)
-    cropped_frames = crop_horizontal(frames, pxl_end_wheel)
+    cropped_frames = crop_horizontal(frames, pxl_end_wheel + 30)
     write(cropped_frames)
 
 
