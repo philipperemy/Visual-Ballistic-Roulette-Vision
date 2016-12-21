@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 if [ -z "$1" ]
 then
     echo "No argument supplied. Provide the video as argument. Example is: video/1_2.mov"
