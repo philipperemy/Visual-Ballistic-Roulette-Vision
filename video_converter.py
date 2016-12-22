@@ -2,11 +2,11 @@ import os
 import sys
 from datetime import datetime, timedelta
 
-from utils import FRAMES_DIR
+from utils import FRAMES_DIR, FRAME_RATE
 
 
 class Converter(object):
-    def __init__(self, video_name, ips=25):
+    def __init__(self, video_name, ips=FRAME_RATE):
         self.video_name = video_name
         self.ips = ips
         self.sampling_interval_ms = float(1 / self.ips) * 1000  # 40ms

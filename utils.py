@@ -4,6 +4,7 @@ import numpy as np
 from scipy.misc import imread
 from scipy.misc import imsave
 
+FRAME_RATE = 25.0
 FRAMES_DIR = 'videos/frames/'
 GRADIENTS_DIR = 'videos/gradients/'
 CROPPED_GRADIENTS_DIR = 'videos/gradients/cropped/'
@@ -11,8 +12,8 @@ CROPPED_GRADIENTS_DIR = 'videos/gradients/cropped/'
 
 # FRAMES_CUT = 30
 
-def frames_to_seconds(frames, rate=25.0):
-    return np.array(frames / rate)
+def frames_to_seconds(frames, rate=FRAME_RATE):
+    return np.array(frames / float(rate))
 
 
 def visualize_plot(arr):
