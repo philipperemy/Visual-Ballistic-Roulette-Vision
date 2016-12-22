@@ -3,7 +3,7 @@ from subprocess import call
 
 def call_program(video=None):
     if video is None:
-        video = 'videos/1_1.mov'
+        video = 'videos/1_10.mov'
     call(['./run.sh', video])
 
 
