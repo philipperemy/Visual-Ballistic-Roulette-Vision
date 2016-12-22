@@ -12,7 +12,8 @@ def bucket_analysis(buckets):
     keep_buckets = []
     print('{} buckets to analyze'.format(len(buckets)))
     for bucket in buckets:
-        the_one_the_most_at_the_right_idx = np.argmax([t[0][1] for t in bucket])
+        # (dim1, dim2) = (row, col)
+        the_one_the_most_at_the_right_idx = np.argmax([t[0][0] for t in bucket])
         keep_buckets.append(bucket[the_one_the_most_at_the_right_idx])
     return keep_buckets
 
@@ -35,6 +36,8 @@ def bucket_frames(results):
                 valid_frames.append(bucket.copy())  # push the bucket.
             bucket = []  # reset the bucket.
         last_known_result = result
+    if len(bucket) > 0:
+        valid_frames.append(bucket.copy())  # push the bucket.
     valid_frames = [f for f in valid_frames if f[0][0] is not None]
     return valid_frames
 
@@ -51,8 +54,8 @@ def analyze_video():
     results = []
 
     frame_iterator = FrameIterator(CROPPED_GRADIENTS_DIR)
-    for i, (frame, name) in enumerate(frame_iterator.read_frames()):
-        # print(name)
+    for (frame, name) in frame_iterator.read_frames():
+        frame_id = int(name.split('_')[1].split('.')[0])
         mask = cv2.inRange(frame, white_lower, white_upper)
         mask = cv2.erode(mask, None, iterations=2)
         mask = cv2.dilate(mask, None, iterations=2)
@@ -79,8 +82,8 @@ def analyze_video():
                 # then update the list of tracked points
                 cv2.circle(frame, (int(x), int(y)), int(radius), (255, 255, 0), 2)
                 cv2.circle(frame, center, 5, (0, 0, 255), -1)
-                results.append((center, i))
-                print(center, i)
+                results.append((center, frame_id))
+                print(center, frame_id)
 
         # update the points queue
         pts.appendleft(center)
