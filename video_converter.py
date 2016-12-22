@@ -1,5 +1,8 @@
 import os
+import sys
 from datetime import datetime, timedelta
+
+from utils import FRAMES_DIR
 
 
 class Converter(object):
@@ -19,7 +22,7 @@ class Converter(object):
 
     def _sample_image(self, image_id, timestamp='00:03:06.016'):
         # ffmpeg -i 1_10.mov -ss 00:03:06.016 -vframes 1 out.png
-        output_name = 'videos/frames/output_%04d.png' % image_id
+        output_name = FRAMES_DIR + 'output_%04d.png' % image_id
         cmd = 'ffmpeg -y -i {} -ss {} -vframes 1 {} > /dev/null 2>&1'.format(self.video_name, timestamp, output_name)
         print('-> {}'.format(cmd))
         os.system(cmd)
@@ -30,5 +33,7 @@ class Converter(object):
 
 
 if __name__ == '__main__':
-    converter = Converter('videos/1_10.mov')
+    assert len(sys.argv) == 2
+    video_name = sys.argv[1]
+    converter = Converter(video_name)
     converter.start_sampling()

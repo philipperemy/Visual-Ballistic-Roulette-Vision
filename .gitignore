@@ -5,3 +5,4 @@ videos/gradients/
 __pycache__/
 *.pkl
 *.pyc
+*.zip
