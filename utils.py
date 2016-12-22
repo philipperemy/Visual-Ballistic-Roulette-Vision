@@ -31,9 +31,9 @@ def crop_horizontal(frames, start):
     return frames[:, :, start:, :]
 
 
-def write(frames):
+def write(frames, frame_names):
     for i, frame in enumerate(frames):
-        name = CROPPED_GRADIENTS_DIR + 'output_{}.png'.format(i)
+        name = frame_names[i].replace(GRADIENTS_DIR, CROPPED_GRADIENTS_DIR)
         print(name)
         imsave(name=name, arr=frame)
 
@@ -73,12 +73,17 @@ def crop_gradients():
     if not os.path.exists(CROPPED_GRADIENTS_DIR):
         os.makedirs(CROPPED_GRADIENTS_DIR)
     frame_iterator = FrameIterator(GRADIENTS_DIR)
-    frames = np.array([frame[0] for frame in FrameIterator.read_frames(frame_iterator)])
+    frame_names = []
+    frames = []
+    for frame in FrameIterator.read_frames(frame_iterator):
+        frame_names.append(frame[1])
+        frames.append(frame[0])
+    frames = np.array(frames)
     mean_pixels = mean_pixels_horizontal(frames)
     pxl_start_wheel, pxl_end_wheel = threshold(mean_pixels, np.mean(mean_pixels))
     print(pxl_start_wheel, pxl_end_wheel)
-    cropped_frames = crop_horizontal(frames, pxl_end_wheel + 30)
-    write(cropped_frames)
+    cropped_frames = crop_horizontal(frames, pxl_end_wheel + 50)
+    write(cropped_frames, frame_names)
 
 
 if __name__ == '__main__':

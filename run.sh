@@ -5,6 +5,11 @@ then
     exit 1
 fi
 
+if [ ! -f $1 ]; then
+    echo "File not found!"
+    exit 1
+fi
+
 rm -rf *.pkl
 rm -rf videos/frames
 rm -rf videos/gradients
