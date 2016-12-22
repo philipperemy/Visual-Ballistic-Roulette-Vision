@@ -1,0 +1,34 @@
+import os
+from datetime import datetime, timedelta
+
+
+class Converter(object):
+    def __init__(self, video_name, ips=25):
+        self.video_name = video_name
+        self.ips = ips
+        self.sampling_interval_ms = float(1 / self.ips) * 1000  # 40ms
+
+    def start_sampling(self):
+        image_id = 1
+        cur_timestamp = datetime(year=2016, month=1, second=0, day=1)
+        ts = cur_timestamp.strftime('%H:%M:%S.%f')[:-3]
+        while self._sample_image(image_id, timestamp=ts):
+            image_id += 1
+            cur_timestamp += timedelta(milliseconds=self.sampling_interval_ms)
+            ts = cur_timestamp.strftime('%H:%M:%S.%f')[:-3]
+
+    def _sample_image(self, image_id, timestamp='00:03:06.016'):
+        # ffmpeg -i 1_10.mov -ss 00:03:06.016 -vframes 1 out.png
+        output_name = 'videos/frames/output_%04d.png' % image_id
+        cmd = 'ffmpeg -y -i {} -ss {} -vframes 1 {} > /dev/null 2>&1'.format(self.video_name, timestamp, output_name)
+        print('-> {}'.format(cmd))
+        os.system(cmd)
+        return os.path.isfile(output_name)  # success or failure.
+
+    def get_timestamp(self, image_id):
+        return (image_id - 1) / self.ips
+
+
+if __name__ == '__main__':
+    converter = Converter('videos/1_10.mov')
+    converter.start_sampling()
