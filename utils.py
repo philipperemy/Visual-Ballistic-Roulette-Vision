@@ -9,6 +9,7 @@ FRAMES_DIR = 'videos/frames/'
 GRADIENTS_DIR = 'videos/gradients/'
 CROPPED_GRADIENTS_DIR = 'videos/gradients/cropped/'
 TMP_DIR = 'videos/tmp/'
+RESULTS_DIR = 'videos/results/'
 VIDEO_NAME_FILE = 'video_name.txt'
 
 
@@ -37,6 +38,10 @@ def cropped_gradients_dir():
 
 def tmp_dir():
     return get_dir_constant(TMP_DIR)
+
+
+def results_dir():
+    return get_dir_constant(RESULTS_DIR)
 
 
 # create directories.
