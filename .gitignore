@@ -8,3 +8,4 @@ __pycache__/
 *.zip
 *.txt
 output/
+cut/
