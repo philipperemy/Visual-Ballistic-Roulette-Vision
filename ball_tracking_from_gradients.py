@@ -5,7 +5,7 @@ import cv2
 import dill
 import numpy as np
 
-from utils import FrameIterator, CROPPED_GRADIENTS_DIR, frames_to_seconds, crop_gradients
+from utils import FrameIterator, cropped_gradients_dir, frames_to_seconds, crop_gradients
 
 
 def bucket_analysis(buckets):
@@ -53,7 +53,7 @@ def analyze_video():
     pts = deque(maxlen=64)
     results = []
 
-    frame_iterator = FrameIterator(CROPPED_GRADIENTS_DIR)
+    frame_iterator = FrameIterator(cropped_gradients_dir())
     for (frame, name) in frame_iterator.read_frames():
         frame_id = int(name.split('_')[1].split('.')[0])
         mask = cv2.inRange(frame, white_lower, white_upper)

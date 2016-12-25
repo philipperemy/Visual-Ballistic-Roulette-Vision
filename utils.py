@@ -10,6 +10,18 @@ GRADIENTS_DIR = 'videos/gradients/'
 CROPPED_GRADIENTS_DIR = 'videos/gradients/cropped/'
 
 
+def frames_dir():
+    return FRAMES_DIR
+
+
+def gradients_dir():
+    return GRADIENTS_DIR
+
+
+def cropped_gradients_dir():
+    return CROPPED_GRADIENTS_DIR
+
+
 # FRAMES_CUT = 30
 
 def frames_to_seconds(frames, rate=FRAME_RATE):
@@ -34,7 +46,7 @@ def crop_horizontal(frames, start):
 
 def write(frames, frame_names):
     for i, frame in enumerate(frames):
-        name = frame_names[i].replace(GRADIENTS_DIR, CROPPED_GRADIENTS_DIR)
+        name = frame_names[i].replace(gradients_dir(), cropped_gradients_dir())
         print(name)
         imsave(name=name, arr=frame)
 
@@ -71,9 +83,9 @@ class FrameIterator(object):
 
 
 def crop_gradients():
-    if not os.path.exists(CROPPED_GRADIENTS_DIR):
-        os.makedirs(CROPPED_GRADIENTS_DIR)
-    frame_iterator = FrameIterator(GRADIENTS_DIR)
+    if not os.path.exists(cropped_gradients_dir()):
+        os.makedirs(cropped_gradients_dir())
+    frame_iterator = FrameIterator(gradients_dir())
     frame_names = []
     frames = []
     for frame in FrameIterator.read_frames(frame_iterator):

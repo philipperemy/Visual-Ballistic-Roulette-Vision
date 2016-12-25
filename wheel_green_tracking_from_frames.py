@@ -7,7 +7,7 @@ import dill
 import imutils
 import numpy as np
 
-from utils import FRAMES_DIR, FrameIterator, frames_to_seconds
+from utils import frames_dir, FrameIterator, frames_to_seconds
 
 
 def extract_lap_frames(results):
@@ -38,7 +38,7 @@ def analyze_video():
     green_upper = (64, 255, 255)
     pts = deque(maxlen=64)
 
-    frames_iterator = FrameIterator(FRAMES_DIR)
+    frames_iterator = FrameIterator(frames_dir())
     for i, (frame, name) in enumerate(frames_iterator.read_frames()):
         print(name)
         # resize the frame, blur it, and convert it to the HSV
