@@ -1,5 +1,6 @@
 import os
 from collections import deque
+from glob import glob
 from pprint import pprint
 
 import cv2
@@ -78,13 +79,13 @@ def analyze_video():
             center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
 
             # only proceed if the radius meets a minimum size
-            if radius > 1:
+            if radius > 10: # 10 seems good.
                 # draw the circle and centroid on the frame,
                 # then update the list of tracked points
                 cv2.circle(frame, (int(x), int(y)), int(radius), (255, 255, 0), 2)
                 cv2.circle(frame, center, 5, (0, 0, 255), -1)
                 results.append((center, frame_id))
-                print(center, frame_id)
+                print(center, frame_id, radius)
 
         # update the points queue
         pts.appendleft(center)
@@ -111,10 +112,13 @@ def analyze_video():
 
 def start_ball_analysis():
     ball_track_file = os.path.join(tmp_dir(), 'b_res.pkl')
+
+    if len(glob(cropped_gradients_dir() + '*.png')) <= 0:
+        crop_gradients()
+
     if os.path.isfile(ball_track_file):
         r = dill.load(open(ball_track_file, 'rb'))
     else:
-        crop_gradients()
         r = analyze_video()
         dill.dump(r, open(ball_track_file, 'wb'))
     pprint(r)
