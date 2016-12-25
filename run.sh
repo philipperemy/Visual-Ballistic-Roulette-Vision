@@ -15,6 +15,6 @@ echo $1 > video_name.txt
 python3 video_converter.py $1
 # ffmpeg -i $1 -r 25 videos/frames/output_%04d.png
 cd matlab
-./run_matlab.sh compute_gradient
+./run_matlab_2.sh $1
 cd ..
 python3 main.py
