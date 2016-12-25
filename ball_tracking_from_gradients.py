@@ -1,11 +1,12 @@
 import os
 from collections import deque
+from pprint import pprint
 
 import cv2
 import dill
 import numpy as np
 
-from utils import FrameIterator, cropped_gradients_dir, frames_to_seconds, crop_gradients
+from utils import FrameIterator, cropped_gradients_dir, frames_to_seconds, crop_gradients, tmp_dir
 
 
 def bucket_analysis(buckets):
@@ -109,16 +110,13 @@ def analyze_video():
 
 
 def start_ball_analysis():
-    ball_track_file = 'b_res.pkl'
+    ball_track_file = os.path.join(tmp_dir(), 'b_res.pkl')
     if os.path.isfile(ball_track_file):
         r = dill.load(open(ball_track_file, 'rb'))
     else:
         crop_gradients()
         r = analyze_video()
         dill.dump(r, open(ball_track_file, 'wb'))
-
-    from pprint import pprint
-
     pprint(r)
     print('\n ---  \n')
     b = bucket_frames(r)
@@ -130,6 +128,7 @@ def start_ball_analysis():
     print(frames_seconds)
     print(np.diff(frames_seconds))
     return frames_seconds
+
 
 if __name__ == '__main__':
     start_ball_analysis()

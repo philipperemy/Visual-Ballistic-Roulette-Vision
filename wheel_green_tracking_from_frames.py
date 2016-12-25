@@ -7,7 +7,7 @@ import dill
 import imutils
 import numpy as np
 
-from utils import frames_dir, FrameIterator, frames_to_seconds
+from utils import frames_dir, FrameIterator, frames_to_seconds, tmp_dir
 
 
 def extract_lap_frames(results):
@@ -104,7 +104,7 @@ def analyze_video():
 
 
 def start_wheel_analysis():
-    wheel_tracking_file = 'w_res.pkl'
+    wheel_tracking_file = os.path.join(tmp_dir(), 'w_res.pkl')
     if os.path.isfile(wheel_tracking_file):
         r = dill.load(open(wheel_tracking_file, 'rb'))
     else:

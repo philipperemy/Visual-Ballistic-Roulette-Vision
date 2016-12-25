@@ -8,6 +8,7 @@ FRAME_RATE = 25.0
 FRAMES_DIR = 'videos/frames/'
 GRADIENTS_DIR = 'videos/gradients/'
 CROPPED_GRADIENTS_DIR = 'videos/gradients/cropped/'
+TMP_DIR = 'videos/tmp/'
 VIDEO_NAME_FILE = 'video_name.txt'
 
 
@@ -32,6 +33,10 @@ def gradients_dir():
 
 def cropped_gradients_dir():
     return get_dir_constant(CROPPED_GRADIENTS_DIR)
+
+
+def tmp_dir():
+    return get_dir_constant(TMP_DIR)
 
 
 # create directories.
@@ -118,5 +123,5 @@ def crop_gradients():
 
 
 if __name__ == '__main__':
-    # crop_gradients()
-    print(get_dir_constant(FRAMES_DIR))
+    crop_gradients()
+    # print(get_dir_constant(FRAMES_DIR))
