@@ -11,7 +11,9 @@ function [ ] = compute_gradient_func( full_video_path )
             img = imread(sprintf(strcat(augmented_name, '/frames/output_%04d.png'), i));
             gradient = img - prev_img;
             % imshow(gradient);
-            imwrite(gradient, sprintf(strcat(augmented_name, '/gradients/output_%04d.png'), i));
+            output_filename = sprintf(strcat(augmented_name, '/gradients/output_%04d.png'), i);
+            disp(output_filename);
+            imwrite(gradient, output_filename);
             prev_img = img;
             fprintf('%d\n', i);
         catch e

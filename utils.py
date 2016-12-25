@@ -34,6 +34,12 @@ def cropped_gradients_dir():
     return get_dir_constant(CROPPED_GRADIENTS_DIR)
 
 
+# create directories.
+frames_dir()
+gradients_dir()
+cropped_gradients_dir()
+
+
 # FRAMES_CUT = 30
 
 def frames_to_seconds(frames, rate=FRAME_RATE):
