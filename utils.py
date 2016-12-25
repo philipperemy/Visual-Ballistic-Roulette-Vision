@@ -16,8 +16,8 @@ def get_dir_constant(constant_value):
         video_name = open(VIDEO_NAME_FILE, 'r').readlines()[0].strip().split('/')[-1].split('.')[0]
     except:
         video_name = ''
-    dir_value = os.path.join(video_name, constant_value)
-    if os.path.exists(dir_value):
+    dir_value = os.path.join('output', video_name, constant_value)
+    if not os.path.exists(dir_value):
         os.makedirs(dir_value, exist_ok=True)
     return dir_value
 

@@ -12,11 +12,6 @@ fi
 
 echo $1 > video_name.txt
 
-rm -rf *.pkl
-rm -rf videos/frames
-rm -rf videos/gradients
-mkdir -p videos/frames
-mkdir -p videos/gradients
 python3 video_converter.py $1
 # ffmpeg -i $1 -r 25 videos/frames/output_%04d.png
 cd matlab
