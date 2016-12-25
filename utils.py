@@ -8,18 +8,30 @@ FRAME_RATE = 25.0
 FRAMES_DIR = 'videos/frames/'
 GRADIENTS_DIR = 'videos/gradients/'
 CROPPED_GRADIENTS_DIR = 'videos/gradients/cropped/'
+VIDEO_NAME_FILE = 'video_name.txt'
+
+
+def get_dir_constant(constant_value):
+    try:
+        video_name = open(VIDEO_NAME_FILE, 'r').readlines()[0].strip().split('/')[-1].split('.')[0]
+    except:
+        video_name = ''
+    dir_value = os.path.join(video_name, constant_value)
+    if os.path.exists(dir_value):
+        os.makedirs(dir_value, exist_ok=True)
+    return dir_value
 
 
 def frames_dir():
-    return FRAMES_DIR
+    return get_dir_constant(FRAMES_DIR)
 
 
 def gradients_dir():
-    return GRADIENTS_DIR
+    return get_dir_constant(GRADIENTS_DIR)
 
 
 def cropped_gradients_dir():
-    return CROPPED_GRADIENTS_DIR
+    return get_dir_constant(CROPPED_GRADIENTS_DIR)
 
 
 # FRAMES_CUT = 30
@@ -100,4 +112,5 @@ def crop_gradients():
 
 
 if __name__ == '__main__':
-    crop_gradients()
+    # crop_gradients()
+    print(get_dir_constant(FRAMES_DIR))

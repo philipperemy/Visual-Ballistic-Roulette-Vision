@@ -10,6 +10,8 @@ if [ ! -f $1 ]; then
     exit 1
 fi
 
+echo $1 > video_name.txt
+
 rm -rf *.pkl
 rm -rf videos/frames
 rm -rf videos/gradients
