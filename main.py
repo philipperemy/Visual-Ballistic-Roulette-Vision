@@ -4,6 +4,11 @@ from ball_tracking_from_gradients import start_ball_analysis
 from utils import results_dir
 from wheel_green_tracking_from_frames import start_wheel_analysis
 
+
+def list_to_str(s):
+    return str(', '.join(['{0:.2f}'.format(b) for b in s]) + '\n')
+
+
 if __name__ == '__main__':
     print('Python script has started. Please wait.')
     balls = start_ball_analysis()
@@ -14,7 +19,5 @@ if __name__ == '__main__':
 
     results_filename = os.path.join(results_dir(), 'results.txt')
     with open(results_filename, 'wt', encoding='utf-8') as f:
-        f.write(str(list(balls)))
-        f.write('\n')
-        f.write(str(list(wheels)))
-        f.write('\n')
+        f.write(list_to_str(balls))
+        f.write(list_to_str(wheels))
