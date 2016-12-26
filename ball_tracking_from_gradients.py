@@ -7,6 +7,7 @@ import cv2
 import dill
 import numpy as np
 
+from hyperparameters import *
 from utils import FrameIterator, cropped_gradients_dir, frames_to_seconds, crop_gradients, tmp_dir
 
 
@@ -22,13 +23,13 @@ def bucket_analysis(buckets):
 
 def bucket_frames(results):
     # complexity MUST NOT BE QUADRATIC.
-    # ball must at least be there for two consecutive frames.
+    # ball must at least be there for N consecutive frames.
     valid_frames = []
     last_known_result = (None, -1)
     bucket = []
     for result in results:
         cur_frame = result[1]
-        if cur_frame <= last_known_result[1] + 3:
+        if cur_frame <= last_known_result[1] + NUMBER_OF_CONSECUTIVE_FRAMES_TO_KEEP_A_BALL_BUCKET:
             if len(bucket) == 0:
                 # push the former element.
                 bucket.append(last_known_result)
@@ -79,7 +80,7 @@ def analyze_video():
             center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
 
             # only proceed if the radius meets a minimum size
-            if radius > 10:  # 10 seems good.
+            if radius > MINIMUM_PIXELS_BALL_RADIUS:  # 10 seems good.
                 # draw the circle and centroid on the frame,
                 # then update the list of tracked points
                 cv2.circle(frame, (int(x), int(y)), int(radius), (255, 255, 0), 2)

@@ -4,6 +4,8 @@ import numpy as np
 from scipy.misc import imread
 from scipy.misc import imsave
 
+from hyperparameters import *
+
 FRAME_RATE = 25.0
 FRAMES_DIR = 'videos/frames/'
 GRADIENTS_DIR = 'videos/gradients/'
@@ -123,7 +125,7 @@ def crop_gradients():
     mean_pixels = mean_pixels_horizontal(frames)
     pxl_start_wheel, pxl_end_wheel = threshold(mean_pixels, np.mean(mean_pixels))
     print(pxl_start_wheel, pxl_end_wheel)
-    cropped_frames = crop_horizontal(frames, pxl_end_wheel + 50)
+    cropped_frames = crop_horizontal(frames, pxl_end_wheel + NUMBER_OF_PIXELS_CROPPED_FROM_RIGHT_SIDE_OF_WHEEL)
     write(cropped_frames, frame_names)
 
 
