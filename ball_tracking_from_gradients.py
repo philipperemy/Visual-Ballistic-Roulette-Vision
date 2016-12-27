@@ -21,28 +21,33 @@ def bucket_analysis(buckets):
     return keep_buckets
 
 
+# because of the B-FRM and P-FRM we have to link the gaps by exactly one.
+# actually on some images, the gradients will indicate the motion of the ball and will disappear for one image because
+# we swing between B-FRM and P-FRM.
+# So the goal is to make NUMBER_OF_CONSECUTIVE_FRAMES_TO_KEEP_A_BALL_BUCKET = 1
+# and fill those gaps.
+
+
+def fill_b_p_frm_gaps(results):
+    updated_results = list()
+    updated_results.append(results[0])
+    for i in range(1, len(results)):
+        frame_1 = results[i - 1]
+        frame_2 = results[i]
+        if frame_1[1] + 2 == frame_2[1]:
+            print('B-FRM P-FRM gap between frame {} and {}'.format(frame_1[1], frame_2[1]))
+            # check for gaps here. We don't care where is the ball exactly. Therefore, frame_1[0]
+            updated_results.append((frame_1[0], frame_1[1] + 1))
+        updated_results.append(frame_2)
+    return updated_results
+
+
 def bucket_frames(results):
-    # complexity MUST NOT BE QUADRATIC.
-    # ball must at least be there for N consecutive frames.
-    valid_frames = []
-    last_known_result = (None, -1)
-    bucket = []
-    for result in results:
-        cur_frame = result[1]
-        if cur_frame <= last_known_result[1] + NUMBER_OF_CONSECUTIVE_FRAMES_TO_KEEP_A_BALL_BUCKET:
-            if len(bucket) == 0:
-                # push the former element.
-                bucket.append(last_known_result)
-            bucket.append(result)  # start filling the bucket.
-        else:
-            if len(bucket) > 0:
-                valid_frames.append(bucket.copy())  # push the bucket.
-            bucket = []  # reset the bucket.
-        last_known_result = result
-    if len(bucket) > 0:
-        valid_frames.append(bucket.copy())  # push the bucket.
-    valid_frames = [f for f in valid_frames if f[0][0] is not None]
-    return valid_frames
+    results = fill_b_p_frm_gaps(results)
+    frames_results = np.array([r[1] for r in results])
+    correct_ids = np.where(np.array([0] + list(np.diff(frames_results))) != 1)[0]
+    # frames_results[np.where(np.array([0] + list(np.diff(frames_results))) != 1)[0]]
+    return [results[i] for i in correct_ids]
 
 
 def analyze_video():
@@ -125,11 +130,11 @@ def start_ball_analysis():
     pprint(r)
     print('\n ---  \n')
     b = bucket_frames(r)
-    a = bucket_analysis(b)
+    # a = bucket_analysis(b)
     pprint(b)
-    pprint(a)
-    pprint(len(a))
-    frames_seconds = frames_to_seconds(np.array([c[1] for c in a]))
+    # pprint(a)
+    # pprint(len(a))
+    frames_seconds = frames_to_seconds(np.array([c[1] for c in b]))
     print(frames_seconds)
     print(np.diff(frames_seconds))
     return frames_seconds
