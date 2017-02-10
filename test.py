@@ -8,13 +8,13 @@ from natural_sort import natural_keys
 
 def read_experimentation_results():
     output = []
-    results = glob('output/**/videos/results/*.txt')
+    results = glob('../Visual-Ballistic-Roulette-Vision/output/**/videos/results/*.txt')
     results.sort(key=natural_keys)
     for result in results:
         with open(result, 'r') as r:
             lines = r.readlines()
             assert len(lines) == 2
-            video_id = result.split('/')[1]
+            video_id = result.split('/')[-4]
             ball_lap_times = [float(v) for v in lines[0].strip().split(',')]
             wheel_lap_times = [float(v) for v in lines[1].strip().split(',')]
             # print('VIDEO ID =', video_id)
